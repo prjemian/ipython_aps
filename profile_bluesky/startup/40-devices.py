@@ -1,5 +1,12 @@
 print(__file__)
 
+from APS_BlueSky_tools.devices import *
+
+
+calscanscs = sscanDevice("gov:", name="scans")
+calcs = userCalcsDevice("gov:", name="calcs")
+calcs.enable.put("Enable")
+calc1 = calcs.calc1
 
 # Set up default complex devices
 
