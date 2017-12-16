@@ -5,6 +5,10 @@ print(__file__)
 callback_db = {}
 
 # load config from ~/.config/databroker/mongodb_config.yml
+#    cd ~/.config
+#    mkdir ./databroker
+#    cd databroker
+#    ln -s ../../.ipython/profile/bluesky/startup/mongodb_config.yml
 from databroker import Broker
 db = Broker.named("mongodb_config")
 
