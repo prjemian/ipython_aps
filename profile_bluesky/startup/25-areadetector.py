@@ -1,62 +1,74 @@
 print(__file__)
 
-from ophyd import SingleTrigger, AreaDetector, SimDetector
-from ophyd import HDF5Plugin
+from ophyd import SingleTrigger, AreaDetector, SimDetector, HDF5Plugin, ImagePlugin
+from ophyd.areadetector.trigger_mixins import SingleTrigger
 from ophyd.areadetector.filestore_mixins import FileStoreHDF5IterativeWrite
 from ophyd import Component, Device, EpicsSignalWithRBV
 from ophyd.areadetector import ADComponent
 
 
-class MyHDF5Plugin(HDF5Plugin, FileStoreHDF5IterativeWrite):
-	
-	file_number_sync = None
-	
-	def get_frames_per_point(self):
-		return self.parent.cam.num_images.get()
-	
+image_file_path = "/tmp"
 
-class MyDetector(SingleTrigger, SimDetector):
-	
-	hdf1 = Component(
-		MyHDF5Plugin, 
-		"HDF1:", 
-		root="/", 					# for databroker filestore
-		write_path_template="/tmp",	# for EPICS area detector
-		)
+
+class MyHDF5Plugin(HDF5Plugin, FileStoreHDF5IterativeWrite):
+    
+    file_number_sync = None
+    
+    def get_frames_per_point(self):    # AD 2.5
+        return self.parent.cam.num_images.get()
+    
+
+class MyHdf5Detector(SimDetector, SingleTrigger): 
+       
+    image = Component(ImagePlugin, suffix="image1:")
+    hdf1 = Component(
+        MyHDF5Plugin,
+        suffix='HDF1:', 
+        root='/',                               # for databroker
+        write_path_template=image_file_path,    # for EPICS AD,
+        reg=db.reg
+    )
+
+
+# trigger first, then base class
+# otherwise, cannot use continuous mode for detector
+class MyPlainSimDetector(SingleTrigger, SimDetector):
+    image = Component(ImagePlugin, suffix="image1:")
+
 
 try:
-	simdet = MyDetector('13SIM1:', name='simdet')
-	simdet.read_attrs = ['hdf1', 'cam']
-	simdet.hdf1.read_attrs = []  # 'image' gets added dynamically
-	#simdet = SimDetector('13SIM1:')
+    simdet = MyHdf5Detector('13SIM1:', name='simdet')
+    simdet.read_attrs = ['hdf1', 'cam']
+    simdet.hdf1.read_attrs = []  # 'image' *should be* added dynamically
+    # put these things in each event document
+    # only first 3 characters show in the LiveTable callback.  So what?
+    simdet.hdf1.read_attrs.append("file_name")
+    simdet.hdf1.read_attrs.append("file_path")
+    simdet.hdf1.read_attrs.append("full_file_name")
+    
+    adsimdet = MyPlainSimDetector(
+        '13SIM1:', 
+        name='adsimdet',
+        read_attrs=['cam', 'image'])
+    # adsimdet.read_attrs = ['cam', 'image']
+    # https://github.com/BCDA-APS/APS_BlueSky_tools/issues/9
+    adsimdet.cam.read_attrs = []
+    adsimdet.image.read_attrs = ['array_counter']    
+
 except TimeoutError:
-	print("Could not connect 13SIM1: sim detector")
-
-"""
-example::
-
-	RE(count([simdet], num=1))
-	imgs = db.get_images(db[-1], 'simdet_image')
-	imgs[0][0]
-	data_uid = simdet.read()['simdet_image']['value']
-	fs.retrieve(data_uid)                                                    
+    print("Could not connect 13SIM1: sim detector")
 
 
-	In [15]: %history
-	simdet.describe()
-	RE(count([simdet]))
-	db.get_images(db[-1], 'simdet_image')
-	images = _
-	images[0]
-	images[0][0]
-	simdet.cam.num_images.set(2)
-	RE(count([simdet]))
-	db.get_images(db[-1], 'simdet_image')
-	images = _
-	images[0][0]
-	images[0]
-	images[0][1]
-	%history
+def demo_count_simdet():
+    simdet.describe_configuration()
+    RE(bp.count([simdet]))
+    cfg = simdet.hdf1.read_configuration()
+    file_name = cfg["simdet_hdf1_full_file_name"]['value']
+    for ev in db[-1].events():
+        print(ev["data"][simdet.hdf1.name+"_full_file_name"])
 
 
-"""
+def ad_continuous_setup(det, acq_time=0.1, acq_period=0.005):
+    det.cam.acquire_time.put(acq_time)
+    det.cam.acquire_period.put(acq_period)
+    det.cam.image_mode.put("Continuous")
