@@ -22,10 +22,12 @@ class MonaCallback0MQ(object):
     My BlueSky 0MQ talker to send *all* documents emitted
     """
     
-    def __init__(self, host=None, port=None, detector=None, signal_name=None):
+    def __init__(self, host=None, port=None, detector=None, signal_name=None, rotation_name=None):
         self.talker = ZMQ_Pair(host or "localhost", port or "5556")
         self.detector = detector
         self.signal_name = signal_name
+        self.rotation_name = rotation_name
+        self.max_motor_still_time = 0.1
     
     def end(self):
         """ZMQ client tells the server to end the connection"""
@@ -33,7 +35,12 @@ class MonaCallback0MQ(object):
 
     def receiver(self, key, document):
         """receive from RunEngine, send from 0MQ talker"""
-        mona_zmq_sender(self.talker, key, document, self.detector, self.signal_name)
+        mona_zmq_sender(
+			self.talker, key, document, self.detector, 
+			signal_name=self.signal_name,
+            rotation_name=self.rotation_name,
+            max_motor_still_time=self.max_motor_still_time
+			)
 
 
 def demo_mona_count():
@@ -98,10 +105,10 @@ def demo_mona_motor_scan(detectors, area_det, motor, start, finish, num=10, md={
         yield from bps.trigger(area_det, wait=False)
         yield from bp.scan(detector_list, motor, start, finish, num=num)
     
-    RE(mona_core(detectors, adsimdet.cam.acquire, num=3), md=metadata)
+    RE(mona_core(detectors, adsimdet.cam.acquire, num=num), md=metadata)
 
 
-def demo_setup_mona_callback_as_zmq_client():
+def demo_setup_mona_callback_as_zmq_client(host=None):
     """
     Prepare to demo the MONA 0MQ callback chain
     First: be sure the ZMQ server code is already running (outside of BlueSky).
@@ -117,12 +124,18 @@ def demo_setup_mona_callback_as_zmq_client():
         exit   # end the ipython BlueSky session
     
     """
-    for key in "doc_collector specwriter zmq_talker BestEffortCallback".split():
+    prune_list = "doc_collector specwriter zmq_talker BestEffortCallback".split()
+    prune_list = "specwriter zmq_talker BestEffortCallback".split()
+    for key in prune_list:
         if key in callback_db:
             RE.unsubscribe(callback_db[key])
             del callback_db[key]
+
     zmq_talker = MonaCallback0MQ(
         detector=adsimdet.image,
-        signal_name=adsimdet.image.array_counter.name)
+        signal_name=adsimdet.image.array_counter.name,
+        rotation_name=m1.user_readback.name,
+        host=host)
+
     callback_db['zmq_talker'] = RE.subscribe(zmq_talker.receiver)
     return zmq_talker
