@@ -8,3 +8,9 @@ security/
 *.pyo
 *~
 APS_BlueSky_tools
+mViewer.log
+
+# eclipse IDE
+.project
+.pydevproject
+.settings
