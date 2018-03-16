@@ -4,7 +4,7 @@ print(__file__)
 
 # m1 = MyEpicsMotorWithDial('gov:m1', name='m1')
 
-m1 = EpicsMotor('gov:m1', name='m1')
+m1 = TunableEpicsMotor("gov:m1", name="m1")
 m2 = EpicsMotor('gov:m2', name='m2')
 m3 = EpicsMotor('gov:m3', name='m3')
 m4 = EpicsMotor('gov:m4', name='m4')
