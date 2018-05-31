@@ -26,6 +26,7 @@ import bluesky.preprocessors as bpp
 from time import sleep
 import numpy as np
 import bluesky.magics
+import bluesky.plan_stubs as bps
 
 
 def append_wa_motor_list(*motorlist):
@@ -35,9 +36,9 @@ def append_wa_motor_list(*motorlist):
 
 # Uncomment the following lines to turn on 
 # verbose messages for debugging.
-# import logging
-# ophyd.logger.setLevel(logging.DEBUG)
-# logging.basicConfig(level=logging.DEBUG)
+import logging
+#ophyd.logger.setLevel(logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 
 # if needed for the EPICS areaDetector SimDetector (12M + 100)
 # os.environ["EPICS_CA_MAX_ARRAY_BYTES"] = "12000100"

@@ -4,7 +4,6 @@ print(__file__)
 
 import APS_BlueSky_tools.callbacks
 import APS_BlueSky_tools.filewriters
-import bluesky.plan_stubs as bps
 
 
 doc_collector = APS_BlueSky_tools.callbacks.DocumentCollectorCallback()
