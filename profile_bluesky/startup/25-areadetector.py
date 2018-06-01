@@ -34,8 +34,8 @@ try:
     adsimdet = MySingleTriggerHdf5SimDetector(_ad_prefix, name='adsimdet')
     #
     # define these so something appears in the event stream
-    adsimdet.hdf1.read_attrs.append("file_name")
-    adsimdet.hdf1.read_attrs.append("file_path")
+    #adsimdet.hdf1.read_attrs.append("file_name")
+    #adsimdet.hdf1.read_attrs.append("file_path")
     adsimdet.hdf1.read_attrs.append("full_file_name")
     adsimdet.read_attrs.append("hdf1")
 
