@@ -8,16 +8,14 @@ from ophyd import Component, Device, EpicsSignalWithRBV
 from ophyd.areadetector import ADComponent
 
 
-image_file_path = "/tmp/simdet"
+# MUST, must, MUST have trailing "/"!!!
+image_file_path = "/tmp/simdet/%Y/%m/%d/"
 
 
 class MyHDF5Plugin(HDF5Plugin, FileStoreHDF5IterativeWrite):
-    
-    file_number_sync = None
-    
-    def get_frames_per_point(self):    # AD 2.5
-        return self.parent.cam.num_images.get()
-    
+    """
+    """
+
 
 class MySingleTriggerHdf5SimDetector(SingleTrigger, SimDetector): 
        
@@ -32,26 +30,15 @@ class MySingleTriggerHdf5SimDetector(SingleTrigger, SimDetector):
 try:
     _ad_prefix = "otzSIM1:"
     adsimdet = MySingleTriggerHdf5SimDetector(_ad_prefix, name='adsimdet')
-    #
-    # define these so something appears in the event stream
-    #adsimdet.hdf1.read_attrs.append("file_name")
-    #adsimdet.hdf1.read_attrs.append("file_path")
-    adsimdet.hdf1.read_attrs.append("full_file_name")
     adsimdet.read_attrs.append("hdf1")
 
 except TimeoutError:
     print(f"Could not connect {_ad_prefix} sim detector")
 
 
-def demo_count_simdet(count_time=0.2):
-    adsimdet.cam.stage_sigs["acquire_time"] = count_time
-    adsimdet.describe_configuration()
-    RE(bp.count([adsimdet]))
-    cfg = adsimdet.hdf1.read_configuration()
-    file_name = cfg["adsimdet_hdf1_full_file_name"]['value']
-    # print(file_name)
-    for i, ev in enumerate(db[-1].events()):
-        print(i, ev["data"][adsimdet.hdf1.name+"_full_file_name"])
+def count_AD(det, count_time=0.2, num=1, delay=None, *, md=None):
+    det.cam.stage_sigs["acquire_time"] = count_time
+    yield from bp.count([det], num=num, delay=delay, md=md)
 
 
 def ad_continuous_setup(det, acq_time=0.1, acq_period=0.005):
