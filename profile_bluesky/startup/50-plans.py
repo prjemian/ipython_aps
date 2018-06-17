@@ -5,6 +5,16 @@ print(__file__)
 
 
 def darks_flats_images(det, shutter, stage, pos_in, pos_out, n_darks=3, n_flats=4, n_images=5, count_time=0.2, md=None):
+    """
+    (demo only) take a sequence of area detector frames and store them all in one file
+    
+    dark frames are stored into one dataset
+    flat frames are stored into another dataset
+    image frames are stored into a third dataset
+    
+    The area detector HDF5 file plugin has a feature that diverts the image stream
+    based on a specific global variable defined in the layout file.
+    """
     det.cam.stage_sigs["acquire_time"] = count_time
 
     yield from bps.mv(
