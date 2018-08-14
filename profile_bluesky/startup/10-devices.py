@@ -3,7 +3,10 @@ print(__file__)
 """Set up default complex devices"""
 
 import time
+import uuid
+
 from ophyd import Component, Device, DeviceStatus
+from ophyd.status import Status
 from ophyd import EpicsMotor, EpicsScaler
 from ophyd.scaler import ScalerCH
 from ophyd import EpicsSignal, EpicsSignalRO, EpicsSignalWithRBV

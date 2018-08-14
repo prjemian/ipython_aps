@@ -4,6 +4,64 @@ print(__file__)
 # Bluesky plans (scans)
 
 
+def run_blocker_in_plan(blocker, *args, **kwargs):
+    """
+    run blocking function ``blocker_(*args, **kwargs)`` from a Bluesky plan
+    
+    Example::
+    
+        RE(run_blocker_in_plan(print, "hello", 2.14))
+
+        def my_plan(t=1.0):
+            yield from run_blocker_in_plan(print, *"print these items".split())
+
+        RE(my_plan())
+
+    """
+    status = Status()
+    
+    @run_in_thread
+    def _internal(blocking_function, *args, **kwargs):
+        blocking_function(*args, **kwargs)
+        status._finished(success=True, done=True)
+    
+    # FIXME: how to keep this from running during summarize_plan()?
+    _internal(blocker, *args, **kwargs)
+
+    while not status.done:
+        yield from bps.sleep(0.005)
+    return status
+
+
+def sleeper(t=1.0):
+    print(datetime.datetime.now())
+    t0 = time.time()
+    time.sleep(t)
+    dt = time.time() - t0 - t
+    print(datetime.datetime.now(), dt)
+
+# summarize_plan(run_blocker_in_plan(sleeper, 2.5))
+# RE(run_blocker_in_plan(sleeper, 2.5))
+
+
+def doo_dad(*args, **kwargs):
+    print("doo_dad", args)
+    print("doo_dad", kwargs)
+
+# summarize_plan(run_blocker_in_plan(doo_dad, 2.5, "doo_dad"))
+# RE(run_blocker_in_plan(doo_dad, 2.5, "doo_dad"))
+
+
+def my_plan(t=1.0):
+    yield from run_blocker_in_plan(sleeper, t)
+
+# summarize_plan(my_plan(0.5))
+# RE(my_plan(0.5))
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
 def darks_flats_images(det, shutter, stage, pos_in, pos_out, n_darks=3, n_flats=4, n_images=5, count_time=0.2, md=None):
     """
     (demo only) take a sequence of area detector frames and store them all in one file
