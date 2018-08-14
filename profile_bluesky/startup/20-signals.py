@@ -2,12 +2,17 @@ print(__file__)
 
 """other signals"""
 
-aps_sr_current = EpicsSignalRO("S:SRcurrentAI", name="aps_sr_current")
+APS = ApsMachineParametersDevice(name="APS")
 
-# always record this as secondary stream during scans
-# name: aps_sr_current_monitor
-# db[-1].table("aps_sr_current_monitor")
-sd.monitors.append(aps_sr_current)
+# make sure these values are logged by every scan
+sd.baseline.append(APS)
+
+
+# always record current as secondary stream during scans
+# name: aps_current_monitor
+# db[-1].table("aps_current_monitor")
+aps_current = APS.current
+sd.monitors.append(aps_current)
 
 
 scans = sscanDevice("gov:", name="scans")
