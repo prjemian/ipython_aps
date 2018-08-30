@@ -12,6 +12,31 @@ from ophyd.areadetector import ADComponent
 image_file_path = "/tmp/simdet/%Y/%m/%d/"
 
 
+def ad_warmed_up(detector):
+    """
+    Has area detector pushed an NDarray to the HDF5 plugin?  True or False
+    
+    Works around an observed issue: #598
+    https://github.com/NSLS-II/ophyd/issues/598#issuecomment-414311372
+    
+    If detector IOC has just been started and has not yet taken an image
+    with the HDF5 plugin, then a TimeoutError will occur as the
+    HDF5 plugin "Capture" is set to 1 (Start).  In such case,
+    first acquire at least one image with the HDF5 plugin enabled.
+    """
+    old_capture = detector.hdf1.capture.value
+    old_file_write_mode = detector.hdf1.file_write_mode.value
+    if old_capture == 1:
+        return True
+    
+    detector.hdf1.file_write_mode.put(1)
+    detector.hdf1.capture.put(1)
+    verdict = detector.hdf1.capture.get() == 1
+    detector.hdf1.capture.put(old_capture)
+    detector.hdf1.file_write_mode.put(old_file_write_mode)
+    return verdict
+
+
 class MyHDF5Plugin(HDF5Plugin, FileStoreHDF5IterativeWrite):
     """
     """
@@ -31,6 +56,7 @@ try:
     _ad_prefix = "otzSIM1:"
     adsimdet = MySingleTriggerHdf5SimDetector(_ad_prefix, name='adsimdet')
     adsimdet.read_attrs.append("hdf1")
+
 
 except TimeoutError:
     print(f"Could not connect {_ad_prefix} sim detector")
