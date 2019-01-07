@@ -20,10 +20,10 @@ from APS_BlueSky_tools import *
 from APS_BlueSky_tools.plans import *
 
 
-class TunableEpicsMotor(EpicsMotor, AxisTunerMixin):
-	"""
-	Example::
-	
+class TunableEpicsMotor(AxisTunerMixin, EpicsMotor):
+    """
+    Example::
+    
         def a2r_pretune_hook():
             # set the counting time for *this* tune
             yield from bps.abs_set(scaler.preset_time, 0.2)
@@ -35,4 +35,4 @@ class TunableEpicsMotor(EpicsMotor, AxisTunerMixin):
         a2r.pre_tune_method = a2r_pretune_hook
         RE(a2r.tune())
 
-	"""
+    """

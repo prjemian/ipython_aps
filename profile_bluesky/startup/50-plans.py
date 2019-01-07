@@ -2,35 +2,7 @@ print(__file__)
 
 
 # Bluesky plans (scans)
-
-
-def run_blocker_in_plan(blocker, *args, **kwargs):
-    """
-    run blocking function ``blocker_(*args, **kwargs)`` from a Bluesky plan
-    
-    Example::
-    
-        RE(run_blocker_in_plan(print, "hello", 2.14))
-
-        def my_plan(t=1.0):
-            yield from run_blocker_in_plan(print, *"print these items".split())
-
-        RE(my_plan())
-
-    """
-    status = Status()
-    
-    @run_in_thread
-    def _internal(blocking_function, *args, **kwargs):
-        blocking_function(*args, **kwargs)
-        status._finished(success=True, done=True)
-    
-    # FIXME: how to keep this from running during summarize_plan()?
-    _internal(blocker, *args, **kwargs)
-
-    while not status.done:
-        yield from bps.sleep(0.005)
-    return status
+from APS_BlueSky_tools.plans import run_blocker_in_plan
 
 
 def sleeper(t=1.0):

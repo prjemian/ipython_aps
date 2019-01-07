@@ -37,9 +37,7 @@ def ad_warmed_up(detector):
     return verdict
 
 
-class MyHDF5Plugin(HDF5Plugin, FileStoreHDF5IterativeWrite):
-    """
-    """
+class MyHDF5Plugin(HDF5Plugin, FileStoreHDF5IterativeWrite): pass
 
 
 class MySingleTriggerHdf5SimDetector(SingleTrigger, SimDetector): 

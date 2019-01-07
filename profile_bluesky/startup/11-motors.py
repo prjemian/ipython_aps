@@ -2,8 +2,6 @@ print(__file__)
 
 """motors, stages, positioners, ..."""
 
-# m1 = MyEpicsMotorWithDial('gov:m1', name='m1')
-
 m1 = TunableEpicsMotor("gov:m1", name="m1", labels=("motor", "tunable"))
 m2 = EpicsMotor('gov:m2', name='m2', labels=("motor", "general"))
 m3 = EpicsMotor('gov:m3', name='m3', labels=("motor", "general"))

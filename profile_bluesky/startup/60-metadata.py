@@ -1,8 +1,9 @@
 print(__file__)
 
 import datetime
-import socket 
-import getpass 
+import socket
+import getpass
+import APS_BlueSky_tools
 
 # Set up default metadata
 
@@ -14,6 +15,7 @@ RE.md['proposal_id'] = None
 RE.md['pid'] = os.getpid()
 RE.md['BLUESKY_VERSION'] = bluesky.__version__
 RE.md['OPHYD_VERSION'] = ophyd.__version__
+RE.md['APS_BLUESKY_TOOLS_VERSION'] = APS_BlueSky_tools.__version__
 
 #import os
 #for key, value in os.environ.items():

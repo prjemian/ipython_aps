@@ -2,19 +2,8 @@ print(__file__)
 
 """various detectors and other signals"""
 
-from APS_BlueSky_tools.examples import SynPseudoVoigt
-
-
-def use_EPICS_scaler_channels(scaler):
-    """
-    configure scaler for only the channels with names assigned in EPICS 
-    """
-    read_attrs = []
-    for ch in scaler.channels.component_names:
-        _nam = epics.caget("{}.NM{}".format(scaler.prefix, int(ch[4:])))
-        if len(_nam.strip()) > 0:
-            read_attrs.append(ch)
-    scaler.channels.read_attrs = read_attrs
+from APS_BlueSky_tools.signals import SynPseudoVoigt
+from APS_BlueSky_tools.devices import use_EPICS_scaler_channels
 
 
 noisy = EpicsSignalRO('gov:userCalc1', name='noisy')
