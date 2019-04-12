@@ -2,7 +2,7 @@ print(__file__)
 
 
 # Bluesky plans (scans)
-from APS_BlueSky_tools.plans import run_blocker_in_plan
+from apstools.plans import run_blocker_in_plan
 
 
 def sleeper(t=1.0):
