@@ -20,11 +20,4 @@ RE.md["version"]['ophyd'] = ophyd.__version__
 RE.md["version"]['apstools'] = apstools.__version__
 RE.md["version"]['epics'] = epics.__version__
 
-print("Metadata dictionary:")
-_tbl = pyRestTable.Table()
-_tbl.addLabel("key")
-_tbl.addLabel("value")
-for k, v in sorted(RE.md.items()):
-    _tbl.addRow((k, str(v)))
-print(_tbl)
-del _tbl
+print_RE_md()
