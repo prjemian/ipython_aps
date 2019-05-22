@@ -18,6 +18,7 @@ from apstools.devices import *
 #from APS_BlueSky_tools.synApps_ophyd import *
 from apstools import *
 from apstools.plans import *
+from apstools import devices as APS_devices
 
 
 class TunableEpicsMotor(AxisTunerMixin, EpicsMotor):
@@ -36,3 +37,30 @@ class TunableEpicsMotor(AxisTunerMixin, EpicsMotor):
         RE(a2r.tune())
 
     """
+
+# create a mixin for motor record's enable/disable support
+# see: https://github.com/BCDA-APS/apstools/pull/152
+
+class EpicsMotorEnableMixin(APS_devices.DeviceMixinBase):
+    """
+    mixin providing access to motor enable/disable
+    """
+    enable_disable = Component(EpicsSignal, "_able", kind='omitted')
+    MOTOR_ENABLE = 0
+    MOTOR_DISABLE = 1
+    
+    @property
+    def enabled(self):
+        return self.enable_disable.value in (self.MOTOR_ENABLE, "Enabled")
+    
+    def enable_motor(self):
+        """BLOCKING call to enable motor axis"""
+        self.enable_disable.put(self.MOTOR_ENABLE)
+    
+    def disable_motor(self):
+        """BLOCKING call to disable motor axis"""
+        self.enable_disable.put(self.MOTOR_DISABLE)
+
+class MyMotor(EpicsMotorEnableMixin, EpicsMotor): ...
+
+otzm2 = MyMotor("otz:m2", name="otzm2")
