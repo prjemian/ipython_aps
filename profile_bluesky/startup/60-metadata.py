@@ -4,6 +4,7 @@ import datetime
 import socket
 import getpass
 import apstools
+import pyRestTable
 
 # Set up default metadata
 
@@ -13,15 +14,17 @@ RE.md['login_id'] = USERNAME + '@' + HOSTNAME
 RE.md['beamline_id'] = 'developer'	# TODO: YOUR_BEAMLINE_HERE
 RE.md['proposal_id'] = None
 RE.md['pid'] = os.getpid()
-RE.md['BLUESKY_VERSION'] = bluesky.__version__
-RE.md['OPHYD_VERSION'] = ophyd.__version__
-RE.md['APSTOOLS_VERSION'] = apstools.__version__
-
-#import os
-#for key, value in os.environ.items():
-#    if key.startswith("EPICS"):
-#        RE.md[key] = value
+RE.md["version"] = {}
+RE.md["version"]['bluesky'] = bluesky.__version__
+RE.md["version"]['ophyd'] = ophyd.__version__
+RE.md["version"]['apstools'] = apstools.__version__
+RE.md["version"]['epics'] = epics.__version__
 
 print("Metadata dictionary:")
+_tbl = pyRestTable.Table()
+_tbl.addLabel("key")
+_tbl.addLabel("value")
 for k, v in sorted(RE.md.items()):
-    print("RE.md['%s']" % k, "=", v)
+    _tbl.addRow((k, str(v)))
+print(_tbl)
+del _tbl
