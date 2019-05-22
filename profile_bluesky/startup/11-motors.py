@@ -11,6 +11,6 @@ m6 = EpicsMotor('gov:m6', name='m6', labels=("motor", "utility"))
 m7 = EpicsMotor('gov:m7', name='m7', labels=("motor", "utility"))
 m8 = EpicsMotor('gov:m8', name='m8', labels=("motor", "utility"))
 
-shutter = EpicsMotorShutter("gov:m9", name="shutter", labels=("shutter", "motor"))
+shutter = APS_devices.EpicsMotorShutter("gov:m9", name="shutter", labels=("shutter", "motor"))
 shutter.closed_position = 0.0
 shutter.open_position = 3.0

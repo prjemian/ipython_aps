@@ -14,14 +14,13 @@ from ophyd import PVPositioner, PVPositionerPC
 from ophyd import AreaDetector, PcoDetectorCam
 from ophyd import SingleTrigger, ImagePlugin, HDF5Plugin
 from ophyd.areadetector.filestore_mixins import FileStoreHDF5IterativeWrite
-from apstools.devices import *
-#from APS_BlueSky_tools.synApps_ophyd import *
-from apstools import *
-from apstools.plans import *
+
+#from apstools.tools import synApps_ophyd as synApps
 from apstools import devices as APS_devices
+from apstools import plans as APS_plans
 
 
-class TunableEpicsMotor(AxisTunerMixin, EpicsMotor):
+class TunableEpicsMotor(APS_devices.AxisTunerMixin, EpicsMotor):
     """
     Example::
     
