@@ -3,7 +3,8 @@ print(__file__)
 import datetime
 import socket
 import getpass
-import apstools
+from apstools import __version__ as aps_version
+from databroker import __version__ as db_version
 import pyRestTable
 
 # Set up default metadata
@@ -14,10 +15,12 @@ RE.md['login_id'] = USERNAME + '@' + HOSTNAME
 RE.md['beamline_id'] = 'developer'	# TODO: YOUR_BEAMLINE_HERE
 RE.md['proposal_id'] = None
 RE.md['pid'] = os.getpid()
-RE.md["version"] = {}
-RE.md["version"]['bluesky'] = bluesky.__version__
-RE.md["version"]['ophyd'] = ophyd.__version__
-RE.md["version"]['apstools'] = apstools.__version__
-RE.md["version"]['epics'] = epics.__version__
+RE.md["versions"] = {}
+RE.md["versions"]['bluesky'] = bluesky.__version__
+RE.md["versions"]['ophyd'] = ophyd.__version__
+RE.md["versions"]['databroker'] = db_version
+RE.md["versions"]['apstools'] = aps_version
+RE.md["versions"]['epics'] = epics.__version__
+del db_version, aps_version
 
 print_RE_md()
