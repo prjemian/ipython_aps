@@ -1,5 +1,36 @@
 print(__file__)
 
+import datetime
+
+class ConsoleTee(object):
+	"""
+	capture printed output to file
+
+	https://stackoverflow.com/questions/11325019/how-to-output-to-the-console-and-file
+	"""
+	def __init__(self, *files):
+		self.files = files
+	def write(self, obj):
+		ts = f"# {str(datetime.datetime.now())}\n"
+		for f in self.files:
+			f.write(ts)
+			f.write(obj)
+			f.flush() # If you want the output to be visible immediately
+	def flush(self) :
+		for f in self.files:
+			f.flush()
+
+"""
+_console_f = open(IPYTHON_CONSOLE_LOG_FILE, 'w')                                                                                              
+_stdout_original = sys.stdout                                                                                                               
+sys.stdout = ConsoleTee(sys.stdout, _console_f)   
+
+sys.stdout = _stdout_original
+_console_f.close()
+"""
+
+#-------------------------------------------------------------
+
 from bluesky import RunEngine
 from bluesky.utils import get_history
 RE = RunEngine(get_history())
@@ -29,12 +60,6 @@ def append_wa_motor_list(*motorlist):
     """add motors to report in the `wa` command"""
     BlueskyMagics.positioners += motorlist
 
-
-# Uncomment the following lines to turn on 
-# verbose messages for debugging.
-import logging
-#ophyd.logger.setLevel(logging.DEBUG)
-#logging.basicConfig(level=logging.DEBUG)
 
 # if needed for the EPICS areaDetector SimDetector (12M + 100)
 # os.environ["EPICS_CA_MAX_ARRAY_BYTES"] = "12000100"
