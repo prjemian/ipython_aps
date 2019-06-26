@@ -22,8 +22,6 @@ import logging
 #logging.basicConfig(level=logging.DEBUG)
 
 logger = logging.getLogger(os.path.split(__file__)[-1])
-file_log_handler = logging.FileHandler(LOGGER_FILE)
-logger.addHandler(file_log_handler)
 
 stderr_log_handler = logging.StreamHandler()
 logger.addHandler(stderr_log_handler)
@@ -37,6 +35,8 @@ stderr_log_format += "%(message)s"
 stderr_log_handler.setFormatter(logging.Formatter(stderr_log_format))
 stderr_log_handler.formatter.default_msec_format = "%s.%03d"
 
+file_log_handler = logging.FileHandler(LOGGER_FILE)
+logger.addHandler(file_log_handler)
 file_log_format = "%(asctime)s"
 file_log_format += ",%(levelname)s"
 file_log_format += ",%(name)s"
@@ -47,7 +47,10 @@ file_log_format += "%(message)s"
 file_log_handler.setFormatter(logging.Formatter(file_log_format))
 file_log_handler.formatter.default_msec_format = "%s.%03d"
 
-logger.debug('Debug message')
-logger.info('Info message')
-logger.warning('Warning message')
-logger.error('Error message')
+logger.warning('logging started')
+
+logger.debug('example Debug message')
+logger.info('example Info message')
+logger.warning(f'logging level = {logger.level}')
+logger.warning('example Warning message')
+logger.error('example Error message')
