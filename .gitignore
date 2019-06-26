@@ -9,8 +9,12 @@ security/
 *~
 APS_BlueSky_tools
 mViewer.log
+core
 
 # eclipse IDE
 .project
 .pydevproject
 .settings
+
+# logging files
+.ipython_*.log*
