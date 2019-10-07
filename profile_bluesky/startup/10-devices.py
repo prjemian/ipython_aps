@@ -62,4 +62,4 @@ class EpicsMotorEnableMixin(APS_devices.DeviceMixinBase):
 
 class MyMotor(EpicsMotorEnableMixin, EpicsMotor): ...
 
-otzm2 = MyMotor("otz:m2", name="otzm2")
+skym2 = MyMotor("sky:m2", name="skym2")

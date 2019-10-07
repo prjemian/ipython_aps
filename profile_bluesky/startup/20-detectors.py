@@ -33,9 +33,9 @@ def mySelectChannels(scaler, chan_names):
             getattr(scaler.channels, ch).s.kind = Kind.hinted
 
 
-noisy = EpicsSignalRO('gov:userCalc1', name='noisy')
-#scaler = EpicsScaler('gov:scaler1', name='scaler')
-scaler = ScalerCH('gov:scaler1', name='scaler')
+noisy = EpicsSignalRO('sky:userCalc1', name='noisy')
+#scaler = EpicsScaler('sky:scaler1', name='scaler')
+scaler = ScalerCH('sky:scaler1', name='scaler')
 while not scaler.connected:
 	time.sleep(0.1)
 #scaler.select_channels(None)
@@ -43,9 +43,9 @@ mySelectChannels(scaler, None)
 # use_EPICS_scaler_channels(scaler)
 
 
-synthetic_pseudovoigt = SynPseudoVoigt(
-    'synthetic_pseudovoigt', m1, 'm1', 
-    center=-1.5 + 0.5*np.random.uniform(), 
-    eta=0.3 + 0.5*np.random.uniform(), 
-    sigma=0.001 + 0.05*np.random.uniform(), 
-    scale=1e5)
+# synthetic_pseudovoigt = SynPseudoVoigt(
+#     'synthetic_pseudovoigt', m1, 'm1', 
+#     center=-1.5 + 0.5*np.random.uniform(), 
+#     eta=0.3 + 0.5*np.random.uniform(), 
+#     sigma=0.001 + 0.05*np.random.uniform(), 
+#     scale=1e5)
