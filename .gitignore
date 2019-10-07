@@ -18,3 +18,5 @@ core
 
 # logging files
 .ipython_*.log*
+.logs/
+.loglogin
