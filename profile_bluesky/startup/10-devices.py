@@ -18,6 +18,7 @@ from ophyd.areadetector.filestore_mixins import FileStoreHDF5IterativeWrite
 #from apstools.tools import synApps_ophyd as synApps
 from apstools import devices as APS_devices
 from apstools import plans as APS_plans
+from apstools import utils as APS_utils
 
 
 class TunableEpicsMotor(APS_devices.AxisTunerMixin, EpicsMotor):
