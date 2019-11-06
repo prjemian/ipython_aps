@@ -14,11 +14,14 @@ from ophyd import PVPositioner, PVPositionerPC
 from ophyd import AreaDetector, PcoDetectorCam
 from ophyd import SingleTrigger, ImagePlugin, HDF5Plugin
 from ophyd.areadetector.filestore_mixins import FileStoreHDF5IterativeWrite
+from ophyd import Kind
 
 #from apstools.tools import synApps_ophyd as synApps
 from apstools import devices as APS_devices
 from apstools import plans as APS_plans
 from apstools import utils as APS_utils
+
+import pyRestTable
 
 
 class TunableEpicsMotor(APS_devices.AxisTunerMixin, EpicsMotor):

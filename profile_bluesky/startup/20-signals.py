@@ -15,7 +15,7 @@ aps_current = aps.current
 sd.monitors.append(aps_current)
 
 
-scans = APS_devices.sscanDevice("sky:", name="scans")
-calcs = APS_devices.userCalcsDevice("sky:", name="calcs")
+scans = APS_devices.SscanDevice("sky:", name="scans")
+calcs = APS_devices.UserCalcsDevice("sky:", name="calcs")
 calcs.enable.put("Enable")
 calc1 = calcs.calc1
