@@ -20,3 +20,6 @@ core
 .ipython_*.log*
 .logs/
 .loglogin
+
+# Microsoft VS Code
+.vscode/
