@@ -6,7 +6,7 @@ from apstools.signals import SynPseudoVoigt
 from apstools.devices import use_EPICS_scaler_channels
 
 
-class MyScalerCH(ScalerCH):
+class FixScalerCH(ScalerCH):
 
     def select_channels(self, chan_names=[]):
         '''Select channels based on the EPICS name PV
@@ -54,8 +54,7 @@ class MyScalerCH(ScalerCH):
                 channel.s.kind = Kind.normal
 
 
-noisy = EpicsSignalRO('sky:userCalc1', name='noisy', labels=["detectors",])
-scaler = MyScalerCH('sky:scaler1', name='scaler', labels=["detectors",])
+scaler = FixScalerCH('sky:scaler1', name='scaler', labels=["detectors",])
 while not scaler.connected:
     time.sleep(0.1)
 
@@ -90,6 +89,7 @@ def show_scaler_configuration(scaler):
 scaler.select_channels()
 show_scaler_configuration(scaler)
 
+noisy = EpicsSignalRO('sky:userCalc1', name='noisy', labels=["detectors",])
 
 synthetic_pseudovoigt = SynPseudoVoigt(
     'synthetic_pseudovoigt', m1, 'm1', 
