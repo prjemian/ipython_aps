@@ -88,7 +88,7 @@ try:
         # probably not set, so let's set it now to some default
         adsimdet.hdf1.create_directory_depth.put(-5)
 except TimeoutError:
-    logger.error(f"Could not connect {_ad_prefix} sim detector as 'adsimdet'")
+    logger.warn(f"Could not connect {_ad_prefix} sim detector as 'adsimdet'")
 
 try:
     # EPICS chooses file names with this detector
@@ -103,4 +103,4 @@ try:
     altsimdet.hdf1.array_counter.put(altsimdet.hdf1.file_number.value)
 
 except TimeoutError:
-    logger.error(f"Could not connect {_ad_prefix} sim detector as 'altsimdet'")
+    logger.warn(f"Could not connect {_ad_prefix} sim detector as 'altsimdet'")

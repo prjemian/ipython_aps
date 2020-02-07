@@ -32,4 +32,5 @@ try:
     )
     calcs.calc2.output_link_pv.put(registers.decimal1.pvname)
 except NameError:
-    logger.info("variable `registers` is not defined")
+    calcs.calc2.reset()
+    logger.warn("reset `calc2` since `registers` not available")
