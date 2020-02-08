@@ -3,12 +3,12 @@
 detectors (area detectors handled separately)
 """
 
-from ophyd.scaler import ScalerCH
-import logging
-
-logger = logging.getLogger(__name__)
+from .session_logs import logger
 logger.info(__file__)
 
+from ophyd.scaler import ScalerCH
+
+__all__ = 'scaler clock IO I0Mon scint diode ROI1 ROI2'.split()
 
 scaler = ScalerCH('sky:scaler1', name='scaler', labels=("detectors",))
 

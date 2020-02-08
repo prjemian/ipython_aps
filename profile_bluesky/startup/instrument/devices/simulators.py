@@ -1,16 +1,16 @@
 
 """
+simulators
 """
 
+from .session_logs import logger
+logger.info(__file__)
+
 import apstools.devices
-import logging
 import numpy
 
 from .calcs import calcs
 from .motors import m1
-
-logger = logging.getLogger(__name__)
-logger.info(__file__)
 
 apstools.devices.setup_lorentzian_swait(
     calcs.calc1,

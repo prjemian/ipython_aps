@@ -3,23 +3,15 @@
 configure for data collection in a console session
 """
 
-import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from .session_logs import logger
 logger.info(__file__)
 
-logger.info("prechecks")
-from .startup.check_python import *
-from .startup.check_bluesky import *
+from .mpl import console
 
-# from .startup.logging_setup import *
-
-logger.info("soft IOCS running?")
+logger.info("are our soft IOCS running?")
 from .iocs.check_iocs import *
 
-logger.info("load bluesky framework")
 logger.info("bluesky framework")
-from .mpl import console
 
 from .startup import *
 

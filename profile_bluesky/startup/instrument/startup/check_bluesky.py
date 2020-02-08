@@ -1,4 +1,10 @@
-# ensure BlueSky is available
+"""ensure BlueSky is available"""
+
+from .session_logs import logger
+logger.info(__file__)
+
+__all__ = []
+
 try:
     import bluesky
 except ImportError:

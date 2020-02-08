@@ -8,6 +8,8 @@ import logging
 import os
 
 
+__all__ = []
+
 logger = logging.getLogger(__name__)
 logger.info(__file__)
 

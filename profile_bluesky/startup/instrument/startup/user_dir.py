@@ -3,13 +3,14 @@
 support a .ipython/user directory for user files
 """
 
+from .session_logs import logger
+logger.info(__file__)
+
 import IPython.paths
-import logging
 import os
 import sys
 
-logger = logging.getLogger(__name__)
-logger.info(__file__)
+__all__ = []
 
 user_dir = os.path.join(
         IPython.paths.get_ipython_dir(), 

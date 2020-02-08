@@ -3,13 +3,13 @@
 make sure we have the software packages we need
 """
 
-import logging
-
-logger = logging.getLogger(__file__)
+from .session_logs import logger
 logger.info(__file__)
 
 import sys
 import os
+
+__all__ = []
 
 # ensure Python 3.6+
 

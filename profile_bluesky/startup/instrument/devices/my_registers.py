@@ -3,12 +3,12 @@
 interface EPICS database of general purpose variables
 """
 
-from ophyd import Component, Device, EpicsSignal
-import logging
-
-logger = logging.getLogger(__name__)
+from .session_logs import logger
 logger.info(__file__)
 
+from ophyd import Component, Device, EpicsSignal
+
+__all__ = ['registers', 'det2', 'mover2']
 
 class MyRegisters(Device):
     decimal1 = Component(EpicsSignal, "float1", kind="hinted")
