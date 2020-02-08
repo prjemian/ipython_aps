@@ -12,6 +12,7 @@ __all__ = [
     'callback_db',
     'bec', 'peaks',
     'np',
+    'summarize_plan',
 ]
 
 # Set up a RunEngine and use metadata backed by a sqlite file.
@@ -70,3 +71,16 @@ import bluesky.preprocessors as bpp
 # from bluesky.simulators import *
 
 import numpy as np
+
+# Uncomment the following lines to turn on 
+# verbose messages for debugging.
+# ophyd.logger.setLevel(logging.DEBUG)
+
+# diagnostics
+from bluesky.utils import ts_msg_hook
+#RE.msg_hook = ts_msg_hook
+from bluesky.simulators import summarize_plan
+
+# set default timeout for all EpicsSignal connections & communications
+import ophyd
+ophyd.EpicsSignal.set_default_timeout(timeout=10, connection_timeout=5)
