@@ -1,6 +1,12 @@
 
 """
+add common metadata to RunEngine
 """
+
+__all__ = []
+
+from ..session_logs import logger
+logger.info(__file__)
 
 import apstools
 import bluesky
@@ -18,7 +24,7 @@ import pyRestTable
 import socket
 import spec2nexus
 
-from ..startup.framework import RE
+from .initialize import RE
 
 logger = logging.getLogger(__name__)
 logger.info(__file__)

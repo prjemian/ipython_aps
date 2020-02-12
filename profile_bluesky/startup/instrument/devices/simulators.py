@@ -1,6 +1,12 @@
 
 """
+simulate devices
 """
+
+__all__ = []
+
+from ..session_logs import logger
+logger.info(__file__)
 
 import apstools.devices
 import logging

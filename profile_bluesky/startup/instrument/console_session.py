@@ -3,30 +3,20 @@
 configure for data collection in a console session
 """
 
-import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from .session_logs import logger
 logger.info(__file__)
 
-logger.info("prechecks")
-from .startup.check_python import *
-from .startup.check_bluesky import *
-
-# from .startup.logging_setup import *
+from .mpl.console import *
 
 logger.info("soft IOCS running?")
 from .iocs.check_iocs import *
 
-logger.info("load bluesky framework")
 logger.info("bluesky framework")
-from .mpl import console
+from .framework import *
 
-from .startup import *
-
-logger.info("load instrument devices")
+logger.info("configure instrument")
 from .devices import *
-
-logger.info("load instrument plans")
 from .plans import *
+# from .utils import *
 
 from apstools.utils import show_ophyd_symbols, print_RE_md

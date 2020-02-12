@@ -3,11 +3,15 @@
 detectors (area detectors handled separately)
 """
 
-from ophyd.scaler import ScalerCH
-import logging
+__all__ = [
+    "scaler",
+    "clock", "I0", "scint", "diode", "I0Mon", "ROI1", "ROI2"
+]
 
-logger = logging.getLogger(__name__)
+from ..session_logs import logger
 logger.info(__file__)
+
+from ophyd.scaler import ScalerCH
 
 
 scaler = ScalerCH('sky:scaler1', name='scaler', labels=("detectors",))

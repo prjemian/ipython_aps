@@ -3,13 +3,16 @@
 various signals
 """
 
-import apstools.devices
-import logging
-import numpy
-from ophyd import EpicsSignalRO
+__all__ = [
+    "shutter",
+    "noisy",
+]
 
-logger = logging.getLogger(__name__)
+from ..session_logs import logger
 logger.info(__file__)
+
+import apstools.devices
+from ophyd import EpicsSignalRO
 
 shutter = apstools.devices.SimulatedApsPssShutterWithStatus(
     name="shutter", labels=("shutters",))
