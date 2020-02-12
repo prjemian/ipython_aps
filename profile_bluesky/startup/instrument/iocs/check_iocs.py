@@ -13,7 +13,6 @@ import logging
 import os
 
 
-
 up = epics.caget("sky:UPTIME", timeout=1)
 if up is None:
     logger.info("EPICS IOCs not running.  Starting them now...")

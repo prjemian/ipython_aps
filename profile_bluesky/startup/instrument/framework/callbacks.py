@@ -21,7 +21,7 @@ from .initialize import RE, callback_db
 # write scans to SPEC data file
 specwriter = apstools.filewriters.SpecWriterCallback()
 #_path = "/tmp"      # make the SPEC file in /tmp (assumes OS is Linux)
-_path = os.getcwd() # make the SPEC file in current working directory (assumes is writable)
+_path = os.getcwd()  # make the SPEC file in current working directory (assumes is writable)
 specwriter.newfile(os.path.join(_path, specwriter.spec_filename))
 callback_db['specwriter'] = RE.subscribe(specwriter.receiver)
 

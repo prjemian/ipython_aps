@@ -9,7 +9,6 @@ from ..session_logs import logger
 logger.info(__file__)
 
 import IPython.paths
-import logging
 import os
 import sys
 

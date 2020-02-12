@@ -14,6 +14,15 @@ __all__ = [
 from ..session_logs import logger
 logger.info(__file__)
 
+__all__ = [
+    'RE', 'db', 'sd',
+    'bp', 'bps', 'bpp',
+    'callback_db',
+    'bec', 'peaks',
+    'np',
+    'summarize_plan',
+]
+
 # Set up a RunEngine and use metadata backed by a sqlite file.
 from bluesky import RunEngine
 from bluesky.utils import get_history
@@ -49,7 +58,7 @@ get_ipython().register_magics(BlueskyMagics)
 from bluesky.callbacks.best_effort import BestEffortCallback
 bec = BestEffortCallback()
 callback_db['bec'] = RE.subscribe(bec)
-peaks = bec.peaks  # just as alias for less typing
+peaks = bec.peaks  # just an alias for less typing
 bec.disable_baseline()
 
 # At the end of every run, verify that files were saved and

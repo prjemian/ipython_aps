@@ -15,7 +15,6 @@ from datetime import datetime
 import epics
 import getpass
 import h5py
-import logging
 import matplotlib
 import numpy
 import ophyd
@@ -26,8 +25,7 @@ import spec2nexus
 
 from .initialize import RE
 
-logger = logging.getLogger(__name__)
-logger.info(__file__)
+__all__ = []
 
 # Set up default metadata
 

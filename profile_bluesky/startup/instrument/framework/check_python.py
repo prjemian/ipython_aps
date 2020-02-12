@@ -11,6 +11,8 @@ logger.info(__file__)
 import sys
 import os
 
+__all__ = []
+
 # ensure Python 3.6+
 
 req_version = (3,6)
