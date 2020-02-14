@@ -29,7 +29,7 @@ __all__ = []
 
 # Set up default metadata
 
-RE.md['beamline_id'] = 'Linux Mint VM7'
+RE.md['beamline_id'] = 'BCDA development'
 RE.md['proposal_id'] = 'testing'
 RE.md['pid'] = os.getpid()
 
