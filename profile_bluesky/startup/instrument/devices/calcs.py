@@ -1,7 +1,9 @@
 
-"""calculations"""
+"""
+calculations
+"""
 
-__all__ = ["calcs", "calcouts",]
+__all__ = ["calcs", "calcouts"]
 
 from ..session_logs import logger
 logger.info(__file__)

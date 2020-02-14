@@ -1,9 +1,7 @@
 
 """area detectors: ADSimDetector"""
 
-__all__ = [
-    "adsimdet", "altsimdet",
-]
+__all__ = ["adsimdet", "altsimdet"]
 
 from ..session_logs import logger
 logger.info(__file__)
