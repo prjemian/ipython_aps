@@ -3,7 +3,7 @@
 detectors (area detectors handled separately)
 """
 
-from .session_logs import logger
+from ..session_logs import logger
 logger.info(__file__)
 
 from ophyd.scaler import ScalerCH

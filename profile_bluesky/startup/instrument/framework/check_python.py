@@ -3,7 +3,7 @@
 make sure we have the software packages we need
 """
 
-from .session_logs import logger
+from ..session_logs import logger
 logger.info(__file__)
 
 import sys

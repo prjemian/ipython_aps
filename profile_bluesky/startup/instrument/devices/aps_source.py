@@ -3,11 +3,11 @@
 APS only: connect with facility information
 """
 
-from .session_logs import logger
+from ..session_logs import logger
 logger.info(__file__)
 
 import apstools.devices
-from ..startup.framework import sd
+from ..startup import sd
 
 __all__ = [
     'aps',

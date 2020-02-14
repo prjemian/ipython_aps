@@ -3,7 +3,7 @@
 configure the motors
 """
 
-from .session_logs import logger
+from ..session_logs import logger
 logger.info(__file__)
 
 from ophyd import Device, Component, EpicsSignal, EpicsMotor

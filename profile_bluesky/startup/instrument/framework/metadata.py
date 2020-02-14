@@ -3,7 +3,7 @@
 common metadata for start documents
 """
 
-from .session_logs import logger
+from ..session_logs import logger
 logger.info(__file__)
 
 import apstools
@@ -21,7 +21,7 @@ import pyRestTable
 import socket
 import spec2nexus
 
-from ..startup.framework import RE
+from .initialize import RE
 
 __all__ = []
 

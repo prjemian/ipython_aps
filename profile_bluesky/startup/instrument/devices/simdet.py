@@ -1,7 +1,7 @@
 
 """area detectors: ADSimDetector"""
 
-from .session_logs import logger
+from ..session_logs import logger
 logger.info(__file__)
 
 from apstools import devices as APS_devices

@@ -1,6 +1,6 @@
 """ensure BlueSky is available"""
 
-from .session_logs import logger
+from ..session_logs import logger
 logger.info(__file__)
 
 __all__ = []

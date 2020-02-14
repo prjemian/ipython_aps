@@ -3,7 +3,7 @@
 interface EPICS database of general purpose variables
 """
 
-from .session_logs import logger
+from ..session_logs import logger
 logger.info(__file__)
 
 from ophyd import Component, Device, EpicsSignal

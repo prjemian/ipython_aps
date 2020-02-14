@@ -3,7 +3,7 @@
 initialize the bluesky framework
 """
 
-from .session_logs import logger
+from ..session_logs import logger
 logger.info(__file__)
 
 __all__ = [
@@ -59,8 +59,8 @@ from bluesky.callbacks.broker import verify_files_saved
 # callback_db['post_run_verify'] = RE.subscribe(post_run(verify_files_saved), 'stop')
 
 # Make plots update live while scans run.
-from bluesky.utils import install_qt_kicker
-install_qt_kicker()
+from bluesky.utils import install_kicker
+install_kicker()
 
 # convenience imports
 # from bluesky.callbacks import *
