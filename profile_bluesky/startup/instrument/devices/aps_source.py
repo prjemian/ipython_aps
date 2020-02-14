@@ -7,7 +7,7 @@ from ..session_logs import logger
 logger.info(__file__)
 
 import apstools.devices
-from ..startup import sd
+from ..framework import sd
 
 __all__ = [
     'aps',
