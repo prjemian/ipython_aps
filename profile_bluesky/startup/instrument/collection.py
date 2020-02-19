@@ -20,4 +20,7 @@ from .devices import *
 from .plans import *
 # from .utils import *
 
-from apstools.utils import show_ophyd_symbols, print_RE_md
+from apstools.utils import *
+
+# ensure we get our own logger
+from .session_logs import logger
