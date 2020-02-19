@@ -7,3 +7,6 @@ from .signals import *
 from .simdet import *
 from .simulators import *
 from .sky_ioc import *
+
+# from .diffractometer import *
+# from .sixc import *
