@@ -25,8 +25,6 @@ import spec2nexus
 
 from .initialize import RE
 
-__all__ = []
-
 # Set up default metadata
 
 RE.md['beamline_id'] = 'BCDA development'

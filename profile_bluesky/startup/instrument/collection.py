@@ -6,10 +6,10 @@ configure for data collection in a console session
 from .session_logs import logger
 logger.info(__file__)
 
-from .mpl import *
+from . import mpl
 
 logger.info("are our soft IOCS running?")
-from .iocs.check_iocs import *
+from .iocs import check_iocs
 
 logger.info("bluesky framework")
 

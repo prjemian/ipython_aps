@@ -4,24 +4,16 @@ initialize the bluesky framework
 """
 
 __all__ = [
-    'RE', 'callback_db', 'db', 'sd',
-    'bec', 'peaks',
-    'bp', 'bps', 'bpp',
-    'np',
-    'summarize_plan',
-    ]
-
-from ..session_logs import logger
-logger.info(__file__)
-
-__all__ = [
     'RE', 'db', 'sd',
     'bp', 'bps', 'bpp',
-    'callback_db',
     'bec', 'peaks',
+    'callback_db',
     'np',
     'summarize_plan',
 ]
+
+from ..session_logs import logger
+logger.info(__file__)
 
 # Set up a RunEngine and use metadata backed by a sqlite file.
 from bluesky import RunEngine
