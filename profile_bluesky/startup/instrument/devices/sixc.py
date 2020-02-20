@@ -1,4 +1,7 @@
 
+# FIXME: problems with this
+# see: https://github.com/BCDA-APS/use_bluesky/issues/44
+
 """
 six circle diffractometer (simulated)
 
