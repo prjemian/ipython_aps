@@ -5,20 +5,60 @@ initialize the bluesky framework
 
 __all__ = [
     'RE', 'db', 'sd',
-    'bp', 'bps', 'bpp',
     'bec', 'peaks',
-    'callback_db',
-    'np',
+    'bp', 'bps', 'bpp',
     'summarize_plan',
-]
+    'np',
+    'callback_db',
+    ]
 
 from ..session_logs import logger
 logger.info(__file__)
 
-# Set up a RunEngine and use metadata backed by a sqlite file.
+# add parent directory of instrument package to import path
+import os, sys
+sys.path.append(
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "..",
+        )
+    )
+)
+
 from bluesky import RunEngine
+from bluesky.utils import PersistentDict
+
+def get_md_path():
+    md_dir_name = "Bluesky_RunEngine_md"
+    if os.environ == "win32":
+        home = os.environ["LOCALAPPDATA"]
+        path = os.path.join(home, md_dir_name)
+    else:       # at least on "linux"
+        home = os.environ["HOME"]
+        path = os.path.join(home, ".config", md_dir_name)
+    return path
+
+
+# check if we need to transition from SQLite-backed historydict
+old_md = None
+md_path = get_md_path()
+if not os.path.exists(md_path):
+    logger.info(
+        "New directory to store RE.md between sessions: %s", 
+        md_path)
+    os.makedirs(md_path)
+    from bluesky.utils import get_history
+    old_md = get_history()
+
+# Set up a RunEngine and use metadata backed PersistentDict
 from bluesky.utils import get_history
-RE = RunEngine(get_history())
+RE = RunEngine({})
+RE.md = PersistentDict(md_path)
+if old_md is not None:
+    logger.info("migrating RE.md storage to PersistentDict")
+    RE.md.update(old_md)
 
 # keep track of callback subscriptions
 callback_db = {}
@@ -50,7 +90,7 @@ get_ipython().register_magics(BlueskyMagics)
 from bluesky.callbacks.best_effort import BestEffortCallback
 bec = BestEffortCallback()
 callback_db['bec'] = RE.subscribe(bec)
-peaks = bec.peaks  # just an alias for less typing
+peaks = bec.peaks  # just an alias, for less typing
 bec.disable_baseline()
 
 # At the end of every run, verify that files were saved and

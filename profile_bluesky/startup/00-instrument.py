@@ -1,4 +1,7 @@
-# start bluesky in a console
+
+"""
+start bluesky in a console
+"""
 
 from instrument.collection import *
 

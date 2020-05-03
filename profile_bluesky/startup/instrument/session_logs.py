@@ -2,15 +2,19 @@
 configure session logging
 """
 
-__all__ = ['logger',]
-
+__all__ = ['logger', ]
 
 from IPython import get_ipython
+import logging
 import os
-# pip install stdlogpj
-import stdlogpj
+import stdlogpj     # pip install stdlogpj
 
 SESSION_NAME = "bluesky-session"
+IPYTHON_LOGGER = "ipython_logger"
+
+BYTE = 1
+kB = 1024 * BYTE
+MB = 1024 * kB
 
 _log_path = os.path.join(os.getcwd(), ".logs")
 if not os.path.exists(_log_path):
@@ -23,15 +27,13 @@ _ipython = get_ipython()
 # %logstart -o -t .ipython_console.log "rotate"
 _ipython.magic(f"logstart -o -t {CONSOLE_IO_FILE} rotate")
 
-
-logger = stdlogpj.standard_logging_setup(SESSION_NAME, "ipython_logger")
-
+logger = stdlogpj.standard_logging_setup(
+    SESSION_NAME, 
+    IPYTHON_LOGGER,
+    maxBytes=1*MB, 
+    backupCount=9)
+logger.setLevel(logging.DEBUG)
 
 logger.info('#'*60 + " startup")
 logger.info('logging started')
 logger.info(f'logging level = {logger.level}')
-
-# logger.debug('example Debug message')
-# logger.info('example Info message')
-# logger.warning('example Warning message')
-# logger.error('example Error message')

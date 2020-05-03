@@ -8,7 +8,7 @@ logger.info(__file__)
 
 from . import mpl
 
-logger.info("are our soft IOCS running?")
+logger.info("Start soft IOC dockers if PVs not available")
 from .iocs import check_iocs
 
 logger.info("bluesky framework")
@@ -18,7 +18,7 @@ from .framework import *
 logger.info("configure instrument")
 from .devices import *
 from .plans import *
-# from .utils import *
+from .utils import *
 
 from apstools.utils import *
 
