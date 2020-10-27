@@ -7,14 +7,20 @@ Find the peak of noisy v. m1 in the range of +/- 2.
 __all__ = [
     "example1",
     "example_findpeak",
+    "change_peak",
+    "repeat_findpeak",
 ]
 
 from ..session_logs import logger
 logger.info(__file__)
 
+import apstools.utils
+import numpy.random
 import pyRestTable
-from ..framework import RE, peaks, bp
-from ..devices import m1, noisy
+from bluesky import preprocessors as bpp
+from ..framework import bec, RE, peaks, bp, sd
+from ..devices import m1, noisy, calcs, calcouts
+
 
 def example1():
     """
@@ -50,7 +56,6 @@ def example1():
     m1.move(peaks["cen"]["noisy"])
 
 
-
 def example_findpeak(number_of_scans=4, number_of_points=23):
     """
     find peak of noisy v. m1 by repeated scans with refinement
@@ -83,3 +88,26 @@ def example_findpeak(number_of_scans=4, number_of_points=23):
     for row in results:
         tbl.addRow(row)
     logger.info("iterative results:\n%s", str(tbl))
+
+
+def change_peak():
+    apstools.devices.setup_lorentzian_swait(
+        calcs.calc1,
+        m1.user_readback,
+        center = 2*numpy.random.random() - 1,
+        width = 0.015 * numpy.random.random(),
+        scale = 10000 * (9 + numpy.random.random()),
+        noise=0.05,
+    )
+
+
+sd.baseline.append(calcs)
+sd.baseline.append(calcouts)
+
+
+def repeat_findpeak(iters=1):
+    for _i in range(iters):
+        apstools.utils.trim_plot_lines(bec, 4, m1, noisy)
+        change_peak()
+        yield from example_findpeak()
+        print(f"Finished #{_i+1} of {iters} iterations")
