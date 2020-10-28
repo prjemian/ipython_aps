@@ -106,8 +106,12 @@ sd.baseline.append(calcouts)
 
 
 def repeat_findpeak(iters=1):
+    # bec.disable_plots()
+    # If plots are disabled, then the peak stats are not run
+    # so peak finding fails.
     for _i in range(iters):
         apstools.utils.trim_plot_lines(bec, 4, m1, noisy)
         change_peak()
         yield from example_findpeak()
-        print(f"Finished #{_i+1} of {iters} iterations")
+        logger.info("Finished #%d of %d iterations", _i+1, iters)
+    # bec.enable_plots()
