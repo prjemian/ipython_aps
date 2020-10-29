@@ -65,7 +65,8 @@ callback_db = {}
 
 # Set up a Broker.
 from databroker import Broker
-db = Broker.named('mongodb_config')
+# db = Broker.named('mongodb_config')
+db = Broker.named('prj')
 
 # Subscribe metadatastore to documents.
 # If this is removed, data is not saved to metadatastore.
@@ -122,4 +123,4 @@ from bluesky.simulators import summarize_plan
 
 # set default timeout for all EpicsSignal connections & communications
 from ophyd.signal import EpicsSignalBase
-EpicsSignalBase.set_default_timeout(timeout=10, connection_timeout=5)
+EpicsSignalBase.set_default_timeout(timeout=10, connection_timeout=5, write_timeout=10)
