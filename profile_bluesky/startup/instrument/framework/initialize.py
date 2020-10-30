@@ -46,7 +46,7 @@ old_md = None
 md_path = get_md_path()
 if not os.path.exists(md_path):
     logger.info(
-        "New directory to store RE.md between sessions: %s", 
+        "New directory to store RE.md between sessions: %s",
         md_path)
     os.makedirs(md_path)
     from bluesky.utils import get_history
@@ -112,8 +112,7 @@ import bluesky.plan_stubs as bps
 import bluesky.preprocessors as bpp
 import numpy as np
 
-# Uncomment the following lines to turn on 
-# verbose messages for debugging.
+# Uncomment to enable verbose debugging messages.
 # ophyd.logger.setLevel(logging.DEBUG)
 
 # diagnostics
@@ -123,4 +122,7 @@ from bluesky.simulators import summarize_plan
 
 # set default timeout for all EpicsSignal connections & communications
 from ophyd.signal import EpicsSignalBase
-EpicsSignalBase.set_default_timeout(timeout=10, connection_timeout=5, write_timeout=10)
+EpicsSignalBase.set_default_timeout(
+    timeout=60,
+    connection_timeout=5,
+    write_timeout=10)
