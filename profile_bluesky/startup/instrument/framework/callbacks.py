@@ -23,12 +23,12 @@ specwriter = apstools.filewriters.SpecWriterCallback()
 #_path = "/tmp"      # make the SPEC file in /tmp (assumes OS is Linux)
 _path = os.getcwd()  # make the SPEC file in current working directory (assumes is writable)
 specwriter.newfile(os.path.join(_path, specwriter.spec_filename))
-callback_db['specwriter'] = RE.subscribe(specwriter.receiver)
+# callback_db['specwriter'] = RE.subscribe(specwriter.receiver)
 
-logger.info(f"writing to SPEC file: {specwriter.spec_filename}")
-logger.info("   >>>>   Using default SPEC file name   <<<<")
-logger.info("   file will be created when bluesky ends its next scan")
-logger.info(f"   to change SPEC file, use command:   newSpecFile('title')")
+# logger.info(f"writing to SPEC file: {specwriter.spec_filename}")
+# logger.info("   >>>>   Using default SPEC file name   <<<<")
+# logger.info("   file will be created when bluesky ends its next scan")
+# logger.info(f"   to change SPEC file, use command:   newSpecFile('title')")
 
 
 def spec_comment(comment, doc=None):

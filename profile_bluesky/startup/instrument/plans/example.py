@@ -14,12 +14,14 @@ __all__ = [
 from ..session_logs import logger
 logger.info(__file__)
 
+from ..devices import m1, noisy, calcs, calcouts
+from ..framework import bec, RE, peaks, bp, sd
+from ..utils import rss_mem
+from bluesky import preprocessors as bpp
 import apstools.utils
 import numpy.random
 import pyRestTable
-from bluesky import preprocessors as bpp
-from ..framework import bec, RE, peaks, bp, sd
-from ..devices import m1, noisy, calcs, calcouts
+import time
 
 
 def example1():
@@ -30,7 +32,7 @@ def example1():
     positioned somewhere between -1 to +1.  Overscan that
     range to find both sides of the peak.
 
-    This is a 2 scan procedure.  First scan passes through 
+    This is a 2 scan procedure.  First scan passes through
     the full range.  Second scan is centered on the peak
     and width of the first scan.
 
@@ -38,7 +40,7 @@ def example1():
 
         RE(bp.scan([noisy], m1, -2.1, 2.1, 23))
         sig = peaks["fwhm"]["noisy"]; m1.move(peaks["cen"]["noisy"]); RE(bp.rel_scan([noisy], m1, -sig, +sig, 23))
-    
+
     1. replace ``RE()`` with ``yield from ``
     2. break lines at ``;``
     3. import objects as needed
@@ -74,6 +76,8 @@ def example_findpeak(number_of_scans=4, number_of_points=23):
     cen = 0
     results = []
     for _again in range(number_of_scans):
+        t0 = time.time()
+        mem0 = rss_mem().rss
         m1.move(cen)
         yield from bp.rel_scan([noisy], m1, -k*fwhm, k*fwhm, number_of_points)
         if "noisy" not in peaks["fwhm"]:
@@ -82,7 +86,11 @@ def example_findpeak(number_of_scans=4, number_of_points=23):
         fwhm = peaks["fwhm"]["noisy"]
         cen = peaks["cen"]["noisy"]
         results.append((RE.md["scan_id"], cen, fwhm))
-    
+        mem = rss_mem().rss
+        logger.info(
+            "dt = %.3f s, rss_mem: %d bytes, change = %d", 
+            time.time() - t0, mem, mem - mem0)
+
     tbl = pyRestTable.Table()
     tbl.labels = "scan_id center FWHM".split()
     for row in results:
@@ -110,8 +118,13 @@ def repeat_findpeak(iters=1):
     # If plots are disabled, then the peak stats are not run
     # so peak finding fails.
     for _i in range(iters):
+        t0 = time.time()
+        mem0 = rss_mem().rss
         apstools.utils.trim_plot_lines(bec, 4, m1, noisy)
         change_peak()
         yield from example_findpeak()
-        logger.info("Finished #%d of %d iterations", _i+1, iters)
+        mem = rss_mem().rss
+        logger.info(
+            "Finished #%d of %d iterations, dt=%.3f s, bytes=%d, bytes_changed=%d",
+            _i+1, iters, time.time() - t0, mem, mem - mem0)
     # bec.enable_plots()
