@@ -96,6 +96,7 @@ def example_findpeak(number_of_scans=4, number_of_points=23):
     for row in results:
         tbl.addRow(row)
     logger.info("iterative results:\n%s", str(tbl))
+    RE._status_tasks.clear()
 
 
 def change_peak():
@@ -120,9 +121,11 @@ def repeat_findpeak(iters=1):
     for _i in range(iters):
         t0 = time.time()
         mem0 = rss_mem().rss
+
         apstools.utils.trim_plot_lines(bec, 4, m1, noisy)
         change_peak()
         yield from example_findpeak()
+
         mem = rss_mem().rss
         logger.info(
             "Finished #%d of %d iterations, dt=%.3f s, bytes=%d, bytes_changed=%d",
