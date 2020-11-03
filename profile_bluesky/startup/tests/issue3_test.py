@@ -52,7 +52,7 @@ def example(iters=1):
         snap0 = tracemalloc.take_snapshot()
         # yield from bp.count([noisy_det])
         yield from bp.scan([noisy_det], motor, -2.1, 2.1, 23)
-        RE._status_tasks.clear
+        RE._status_tasks.clear()
         mem = rss_mem().rss
         snap = tracemalloc.take_snapshot()
         print(
@@ -72,8 +72,8 @@ def example(iters=1):
 
 tracemalloc.start()
 snap_start = tracemalloc.take_snapshot()
-for _i in range(13):
-    uids = RE(example(8))
+for _i in range(6):
+    uids = RE(example(80))
     RE._clear_call_cache()
     RE._clear_run_cache()
 snap_end = tracemalloc.take_snapshot()
