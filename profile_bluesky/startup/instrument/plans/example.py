@@ -128,6 +128,6 @@ def repeat_findpeak(iters=1):
 
         mem = rss_mem().rss
         logger.info(
-            "Finished #%d of %d iterations, dt=%.3f s, bytes=%d, bytes_changed=%d",
+            "Finished %d of %d iterations   dt %.3f s   bytes %d   bytes_changed %d",
             _i+1, iters, time.time() - t0, mem, mem - mem0)
     # bec.enable_plots()
