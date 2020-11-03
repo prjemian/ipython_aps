@@ -72,10 +72,10 @@ def example(iters=1):
 
 tracemalloc.start()
 snap_start = tracemalloc.take_snapshot()
-for _i in range(6):
-    uids = RE(example(80))
+for _i in range(5):
+    uids = RE(example(5))
     RE._clear_call_cache()
     RE._clear_run_cache()
 snap_end = tracemalloc.take_snapshot()
-snap_report(snap_start, snap_end, threshhold=10000)
+# snap_report(snap_start, snap_end, threshhold=10000)
 tracemalloc.stop()
