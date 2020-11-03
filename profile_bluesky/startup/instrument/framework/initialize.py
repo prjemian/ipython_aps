@@ -122,7 +122,9 @@ from bluesky.simulators import summarize_plan
 
 # set default timeout for all EpicsSignal connections & communications
 from ophyd.signal import EpicsSignalBase
-EpicsSignalBase.set_default_timeout(
+EpicsSignalBase.set_defaults(
     timeout=60,
     connection_timeout=5,
-    write_timeout=10)
+    write_timeout=10,
+    auto_monitor=True,
+    )
