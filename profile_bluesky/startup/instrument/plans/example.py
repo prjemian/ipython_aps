@@ -22,6 +22,7 @@ import apstools.utils
 import numpy.random
 import pyRestTable
 import time
+import tracemalloc
 
 
 def example1():
@@ -115,6 +116,8 @@ sd.baseline.append(calcouts)
 
 
 def repeat_findpeak(iters=1):
+    tracemalloc.start()
+    snap_start = tracemalloc.take_snapshot()
     # bec.disable_plots()
     # If plots are disabled, then the peak stats are not run
     # so peak finding fails.
@@ -131,3 +134,23 @@ def repeat_findpeak(iters=1):
             "Finished %d of %d iterations   dt %.3f s   bytes %d   bytes_changed %d",
             _i+1, iters, time.time() - t0, mem, mem - mem0)
     # bec.enable_plots()
+    snap_end = tracemalloc.take_snapshot()
+    snap_report(snap_start, snap_end, threshhold=10000)
+    tracemalloc.stop()
+
+
+def snap_report(s0, s1, title=None, threshhold = 1000, key_type="lineno"):
+    """
+    report biggest differences between two tracemalloc snapshots: s1 - s0
+    """
+    # key_type = [filename,  lineno,  traceback]
+    if title is None:
+        title = f"tracemalloc {key_type} differences > {threshhold} bytes"
+    top_stats = s1.compare_to(s0, key_type)
+    print(f"{title}:")
+    tbl = pyRestTable.Table()
+    tbl.labels = "item diff value".split()
+    for i, stat in enumerate(top_stats):
+        if stat.size_diff > threshhold:
+            tbl.addRow((i+1, stat.size_diff, stat))
+    print(tbl)
