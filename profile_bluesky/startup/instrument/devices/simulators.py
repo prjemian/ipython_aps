@@ -11,8 +11,11 @@ logger.info(__file__)
 import apstools.devices
 import numpy
 
-from .calcs import calcs
-from .motors import m1
+from . import calcs
+from . import m1
+from . import mover2
+from . import registers
+
 
 apstools.devices.setup_lorentzian_swait(
     calcs.calc1,
@@ -33,6 +36,6 @@ try:
         noise=0.05,
     )
     calcs.calc2.output_link_pv.put(registers.decimal1.pvname)
-except NameError:
+except NameError as exc:
     calcs.calc2.reset()
-    logger.warn("reset `calc2` since `registers` not available")
+    logger.warn("reset `calc2`: %s", exc)

@@ -154,3 +154,4 @@ def snap_report(s0, s1, title=None, threshhold = 1000, key_type="lineno"):
         if stat.size_diff > threshhold:
             tbl.addRow((i+1, stat.size_diff, stat))
     print(tbl)
+    logger.info("%s\n%s", title, tbl)
