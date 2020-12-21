@@ -1,18 +1,23 @@
-
 """
 initialize the bluesky framework
 """
 
 __all__ = [
-    'RE', 'db', 'sd',
-    'bec', 'peaks',
-    'bp', 'bps', 'bpp',
-    'summarize_plan',
-    'np',
-    'callback_db',
-    ]
+    "RE",
+    "db",
+    "sd",
+    "bec",
+    "peaks",
+    "bp",
+    "bps",
+    "bpp",
+    "summarize_plan",
+    "np",
+    "callback_db",
+]
 
 from ..session_logs import logger
+
 logger.info(__file__)
 
 
@@ -21,7 +26,7 @@ import sys
 from bluesky import RunEngine
 from bluesky.utils import PersistentDict
 from bluesky.utils import get_history
-import databroker 
+import databroker
 from bluesky import SupplementalData
 from bluesky.utils import ProgressBarManager
 from IPython import get_ipython
@@ -42,13 +47,7 @@ import numpy as np
 
 # add parent directory of instrument package to import path
 sys.path.append(
-    os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__),
-            "..",
-            "..",
-        )
-    )
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..",))
 )
 
 
@@ -57,7 +56,7 @@ def get_md_path():
     if os.environ == "win32":
         home = os.environ["LOCALAPPDATA"]
         path = os.path.join(home, md_dir_name)
-    else:       # at least on "linux"
+    else:  # at least on "linux"
         home = os.environ["HOME"]
         path = os.path.join(home, ".config", md_dir_name)
     return path
@@ -68,10 +67,11 @@ old_md = None
 md_path = get_md_path()
 if not os.path.exists(md_path):
     logger.info(
-        "New directory to store RE.md between sessions: %s",
-        md_path)
+        "New directory to store RE.md between sessions: %s", md_path
+    )
     os.makedirs(md_path)
     from bluesky.utils import get_history
+
     old_md = get_history()
 
 # Set up a RunEngine and use metadata backed PersistentDict
@@ -89,7 +89,7 @@ db = databroker.catalog["prj"].v1
 
 # Subscribe metadatastore to documents.
 # If this is removed, data is not saved to metadatastore.
-callback_db['db'] = RE.subscribe(db.insert)
+callback_db["db"] = RE.subscribe(db.insert)
 
 # Set up SupplementalData.
 sd = SupplementalData()
@@ -104,7 +104,7 @@ get_ipython().register_magics(BlueskyMagics)
 
 # Set up the BestEffortCallback.
 bec = BestEffortCallback()
-callback_db['bec'] = RE.subscribe(bec)
+callback_db["bec"] = RE.subscribe(bec)
 peaks = bec.peaks  # just an alias, for less typing
 bec.disable_baseline()
 
@@ -117,12 +117,9 @@ bec.disable_baseline()
 # ophyd.logger.setLevel(logging.DEBUG)
 
 # diagnostics
-#RE.msg_hook = ts_msg_hook
+# RE.msg_hook = ts_msg_hook
 
 # set default timeout for all EpicsSignal connections & communications
 EpicsSignalBase.set_defaults(
-    timeout=60,
-    connection_timeout=5,
-    write_timeout=10,
-    auto_monitor=True,
-    )
+    timeout=60, connection_timeout=5, write_timeout=10, auto_monitor=True,
+)

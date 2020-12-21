@@ -1,4 +1,3 @@
-
 """
 add common metadata to RunEngine
 """
@@ -6,10 +5,12 @@ add common metadata to RunEngine
 __all__ = []
 
 from ..session_logs import logger
+
 logger.info(__file__)
 
 import gi
-gi.require_version('Hkl', '5.0')
+
+gi.require_version("Hkl", "5.0")
 
 import apstools
 import bluesky
@@ -31,26 +32,26 @@ from .initialize import RE
 
 # Set up default metadata
 
-RE.md['beamline_id'] = 'BCDA development'
-RE.md['proposal_id'] = 'testing'
-RE.md['pid'] = os.getpid()
+RE.md["beamline_id"] = "BCDA development"
+RE.md["proposal_id"] = "testing"
+RE.md["pid"] = os.getpid()
 
-HOSTNAME = socket.gethostname() or 'localhost' 
-USERNAME = getpass.getuser() or 'synApps_xxx_user' 
-RE.md['login_id'] = USERNAME + '@' + HOSTNAME
+HOSTNAME = socket.gethostname() or "localhost"
+USERNAME = getpass.getuser() or "synApps_xxx_user"
+RE.md["login_id"] = USERNAME + "@" + HOSTNAME
 
 # useful diagnostic to record with all data
 versions = dict(
-    apstools = apstools.__version__,
-    bluesky = bluesky.__version__,
-    databroker = databroker.__version__,
-    epics = epics.__version__,
-    h5py = h5py.__version__,
-    hkl = hkl.__version__,
-    matplotlib = matplotlib.__version__,
-    numpy = numpy.__version__,
-    ophyd = ophyd.__version__,
-    pyRestTable = pyRestTable.__version__,
-    spec2nexus = spec2nexus.__version__,
+    apstools=apstools.__version__,
+    bluesky=bluesky.__version__,
+    databroker=databroker.__version__,
+    epics=epics.__version__,
+    h5py=h5py.__version__,
+    hkl=hkl.__version__,
+    matplotlib=matplotlib.__version__,
+    numpy=numpy.__version__,
+    ophyd=ophyd.__version__,
+    pyRestTable=pyRestTable.__version__,
+    spec2nexus=spec2nexus.__version__,
 )
-RE.md['versions'] = versions
+RE.md["versions"] = versions

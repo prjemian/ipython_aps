@@ -1,13 +1,11 @@
-
 """
 interface EPICS database of general purpose variables
 """
 
-__all__ = [
-    "registers", "det2", "mover2"
-]
+__all__ = ["registers", "det2", "mover2"]
 
 from ..session_logs import logger
+
 logger.info(__file__)
 
 from ophyd import Component, Device, EpicsSignal
