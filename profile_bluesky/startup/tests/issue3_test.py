@@ -21,6 +21,7 @@ from ophyd.sim import motor, noisy_det
 RE = RunEngine({})
 pid = os.getpid()
 process = psutil.Process(pid)
+REPORT_SNAP = False
 
 
 def rss_mem():
@@ -43,7 +44,6 @@ def snap_report(s0, s1, title=None, threshhold = 1000, key_type="lineno"):
 
 
 def example(iters=1):
-    tracemalloc.start()
     mem_start = rss_mem().rss
     snap_start = tracemalloc.take_snapshot()
     for _i in range(iters):
@@ -52,6 +52,7 @@ def example(iters=1):
         snap0 = tracemalloc.take_snapshot()
         # yield from bp.count([noisy_det])
         yield from bp.scan([noisy_det], motor, -2.1, 2.1, 23)
+        RE._status_tasks.clear()
         mem = rss_mem().rss
         snap = tracemalloc.take_snapshot()
         print(
@@ -59,13 +60,22 @@ def example(iters=1):
             f", dt={time.time() - t0:.3f} s"
             f", bytes={mem}, bytes_changed={mem - mem0}"
             )
-        snap_report(snap0, snap, threshhold=10000)
+        if REPORT_SNAP:
+            snap_report(snap_start, snap, threshhold=10000)
 
     mem_end = rss_mem().rss
     snap_end = tracemalloc.take_snapshot()
     print(f"changed: {mem_end - mem_start}")
-    snap_report(snap_start, snap_end, threshhold=10000)
-    tracemalloc.stop()
+    if REPORT_SNAP:
+        snap_report(snap_start, snap_end, threshhold=10000)
 
 
-uids = RE(example(5))
+tracemalloc.start()
+snap_start = tracemalloc.take_snapshot()
+for _i in range(5):
+    uids = RE(example(5))
+    RE._clear_call_cache()
+    RE._clear_run_cache()
+snap_end = tracemalloc.take_snapshot()
+# snap_report(snap_start, snap_end, threshhold=10000)
+tracemalloc.stop()
